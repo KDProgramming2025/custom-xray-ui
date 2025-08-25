@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Watch • StreamBoard</title>
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0f0f10" />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <header class="app-bar">
+      <a class="logo-wrap" href="/">
+        <img src="assets/logo.svg" alt="StreamBoard logo" height="40" />
+        <span>StreamBoard</span>
+      </a>
+      <form class="search-bar" onsubmit="return false">
+        <input id="searchInput" placeholder="Search videos..." aria-label="Search videos" />
+      </form>
+      <a class="btn" href="index.html">Home</a>
+    </header>
+
+    <main class="player-shell">
+      <div>
+        <div class="video-frame fade-in">
+          <video
+            controls
+            preload="metadata"
+            poster="assets/thumbs/v01.svg"
+            crossorigin
+            playsinline
+          >
+            <source src="/hls/playlist.m3u8" type="application/vnd.apple.mpegurl" />
+          </video>
+          <div class="quality-bar"></div>
+        </div>
+        <div class="video-info">
+          <h1 data-video-title class="fade-in">Loading...</h1>
+          <div class="stats" data-stats style="font-size: 13px; color: #9098a4"></div>
+          <div class="tag-row" data-tags></div>
+          <div class="divider"></div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap">
+            <button class="btn accent">Subscribe</button>
+            <button class="btn">Share</button>
+            <button class="btn">Save</button>
+          </div>
+        </div>
+      </div>
+      <aside style="display: flex; flex-direction: column; gap: 22px">
+        <h2 style="margin: 0; font-size: 18px">Up Next</h2>
+        <div
+          id="upNext"
+          class="grid videos"
+          style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))"
+        ></div>
+      </aside>
+    </main>
+
+    <footer class="site">© <span id="y"></span> StreamBoard Media</footer>
+    <script>
+      document.getElementById("y").textContent = new Date().getFullYear();
+    </script>
+    <script src="assets/app.js" defer></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const up = document.getElementById("upNext");
+        if (up) {
+          VIDEO_DATA.slice(0, 8).forEach((v) =>
+            up.insertAdjacentHTML("beforeend", buildCard(v))
+          );
+        }
+      });
+    </script>
+  </body>
+</html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Watch • StreamBoard</title><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0f0f10"><link rel="stylesheet" href="assets/styles.css"></head><body>
+<header class="app-bar"><a class="logo-wrap" href="/"><img src="assets/logo.svg" alt="StreamBoard logo" height="40"><span>StreamBoard</span></a><form class="search-bar" onsubmit="return false"><input id="searchInput" placeholder="Search videos..." aria-label="Search videos"></form><a class="btn" href="index.html">Home</a></header>
+<main class="player-shell">
+<div>
+<div class="video-frame fade-in"><video controls preload="metadata" poster="assets/thumbs/v01.svg" crossorigin playsinline>
+<source src="/hls/playlist.m3u8" type="application/vnd.apple.mpegurl">
+</video><div class="quality-bar"></div></div>
+<div class="video-info"><h1 data-video-title class="fade-in">Loading...</h1><div class="stats" data-stats style="font-size:13px;color:#9098a4"></div><div class="tag-row" data-tags></div><div class="divider"></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn accent">Subscribe</button><button class="btn">Share</button><button class="btn">Save</button></div></div>
+</div>
+<aside style="display:flex;flex-direction:column;gap:22px"><h2 style="margin:0;font-size:18px;">Up Next</h2><div id="upNext" class="grid videos" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr));"></div></aside>
+</main>
+<footer class="site">© <span id="y"></span> StreamBoard Media</footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+<script src="assets/app.js" defer></script>
+<script>document.addEventListener('DOMContentLoaded',()=>{const up=document.getElementById('upNext');if(up){VIDEO_DATA.slice(0,8).forEach(v=>up.insertAdjacentHTML('beforeend',buildCard(v)));}}</script>
+</body></html>

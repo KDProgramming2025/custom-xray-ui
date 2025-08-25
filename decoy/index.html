@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>StreamBoard • Watch &amp; Discover</title>
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0f0f10" />
+    <meta
+      name="description"
+      content="StreamBoard – Discover trending analysis, tech, music and adventure videos."
+    />
+    <link rel="preload" href="assets/styles.css" as="style" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="preload">
+    <header class="app-bar">
+      <a class="logo-wrap" href="/">
+        <img
+          src="assets/logo.svg"
+          alt="StreamBoard logo"
+          height="40"
+        />
+        <span>StreamBoard</span>
+      </a>
+      <form class="search-bar" onsubmit="return false">
+        <input id="searchInput" placeholder="Search videos..." aria-label="Search videos" />
+      </form>
+      <a class="btn accent" href="watch.html?v=v04">Watch Now</a>
+    </header>
+
+    <div class="hero">
+      <h1>Insightful streaming for curiosity &amp; creativity.</h1>
+      <p>
+        Dive into fast, high-quality stories spanning technology, science,
+        nature, culture and music. Fresh drops daily in adaptive quality.
+      </p>
+      <div class="inline-cards">
+        <div class="mini">
+          <h3>Trending Topics</h3>
+            <span>Realtime curated feed</span>
+            <div class="tag-row">
+              <span class="tag">Space</span>
+              <span class="tag">4K</span>
+              <span class="tag">Music</span>
+              <span class="tag">Coding</span>
+            </div>
+        </div>
+        <div class="mini">
+          <h3>Ultra HD</h3>
+          <span>4K &amp; HDR previews</span>
+          <div class="tag-row">
+            <span class="tag">4K</span>
+            <span class="tag">HDR</span>
+            <span class="tag">60fps</span>
+          </div>
+        </div>
+        <div class="mini">
+          <h3>Longform</h3>
+          <span>Deep dives &amp; docs</span>
+          <div class="tag-row">
+            <span class="tag">Documentary</span>
+            <span class="tag">Analysis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <section>
+        <div class="section-head">
+          <h2>Trending Now</h2>
+          <a class="btn" href="#">View All</a>
+        </div>
+        <div id="trending" class="grid videos"></div>
+      </section>
+      <section style="margin-top: 52px">
+        <div class="section-head">
+          <h2>Fresh Uploads</h2>
+          <div class="notice-pill">Auto refreshed</div>
+        </div>
+        <div id="recent" class="grid videos"></div>
+      </section>
+    </main>
+
+    <footer class="site">
+      © <span id="y"></span> StreamBoard Media. Experience previews only.
+    </footer>
+    <script>
+      document.getElementById("y").textContent = new Date().getFullYear();
+    </script>
+    <script src="assets/app.js" defer></script>
+  </body>
+</html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>StreamBoard • Watch & Discover</title><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0f0f10"><meta name="description" content="StreamBoard – Discover trending analysis, tech, music and adventure videos."><link rel="preload" href="assets/styles.css" as="style"><link rel="stylesheet" href="assets/styles.css"><link rel="icon" href="/favicon.svg" type="image/svg+xml"></head><body class="preload">
+<header class="app-bar"><a class="logo-wrap" href="/"><img src="assets/logo.svg" alt="StreamBoard logo" height="40"><span>StreamBoard</span></a><form class="search-bar" onsubmit="return false"><input id="searchInput" placeholder="Search videos..." aria-label="Search videos"></form><a class="btn accent" href="watch.html?v=v04">Watch Now</a></header>
+<div class="hero"><h1>Insightful streaming for curiosity & creativity.</h1><p>Dive into fast, high-quality stories spanning technology, science, nature, culture and music. Fresh drops daily in adaptive quality.</p><div class="inline-cards"><div class="mini"><h3>Trending Topics</h3><span>Realtime curated feed</span><div class="tag-row"><span class="tag">Space</span><span class="tag">4K</span><span class="tag">Music</span><span class="tag">Coding</span></div></div><div class="mini"><h3>Ultra HD</h3><span>4K & HDR previews</span><div class="tag-row"><span class="tag">4K</span><span class="tag">HDR</span><span class="tag">60fps</span></div></div><div class="mini"><h3>Longform</h3><span>Deep dives & docs</span><div class="tag-row"><span class="tag">Documentary</span><span class="tag">Analysis</span></div></div></div></div>
+<main>
+<section><div class="section-head"><h2>Trending Now</h2><a class="btn" href="#">View All</a></div><div id="trending" class="grid videos"></div></section>
+<section style="margin-top:52px"><div class="section-head"><h2>Fresh Uploads</h2><div class="notice-pill">Auto refreshed</div></div><div id="recent" class="grid videos"></div></section>
+</main>
+<footer class="site">© <span id="y"></span> StreamBoard Media. Experience previews only.</footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+<script src="assets/app.js" defer></script>
+</body></html>
