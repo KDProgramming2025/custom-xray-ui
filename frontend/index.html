@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>VPN Manager</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script>window.ASSET_VERSION = '16';</script>
+  <link id="app-css" rel="stylesheet" href="css.css">
+  <script>
+    /* Apply single version cache-bust for CSS */
+    (function(){ try { var v = window.ASSET_VERSION; var l = document.getElementById('app-css'); if(l) l.href = 'css.css?v='+encodeURIComponent(v); } catch(e){} })();
+  </script>
+</head>
+<body>
+  <!-- Auth Overlay -->
+  <div id="auth-overlay" class="auth-overlay" style="display:none;">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <div class="auth-header">
+        <h2 id="authTitle">Sign In</h2>
+      </div>
+      <form id="login-form" class="auth-form" autocomplete="off">
+        <div class="field-group">
+          <label for="login-username">Username</label>
+          <input id="login-username" name="username" placeholder="admin" autofocus>
+        </div>
+        <div class="field-group">
+          <label for="login-password">Password</label>
+          <div class="password-wrap">
+            <input id="login-password" name="password" type="password" placeholder="••••••••" minlength="4">
+            <button type="button" class="pw-toggle" aria-label="Toggle password visibility">👁</button>
+          </div>
+        </div>
+        <div class="auth-actions">
+          <button type="submit" id="loginSubmit" class="btn btn-primary full">Sign In</button>
+        </div>
+        <div id="login-error" class="auth-error" role="alert" style="display:none;"></div>
+      </form>
+    </div>
+  </div>
+  <div class="bg-net" aria-hidden="true"></div>
+  <div class="container">
+    <header>
+      <div class="title">
+        <div class="logo" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M4 6.5C4 5.12 5.12 4 6.5 4h5c.53 0 1.04.21 1.41.59l4.5 4.5c.38.37.59.88.59 1.41v6.5A2.5 2.5 0 0 1 16 19.5H6.5A2.5 2.5 0 0 1 4 17V6.5z" fill="url(#g)"/>
+            <defs>
+              <linearGradient id="g" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#60A5FA"/><stop offset="1" stop-color="#A78BFA"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <h1>VPN Manager</h1>
+          <div class="subtitle">Manage users, quotas, expiry, and share vless:// links</div>
+        </div>
+      </div>
+  
+      <div style="display:flex;gap:10px;">
+        <label style="margin:0;">
+          <input id="restoreFile" type="file" accept=".json" style="display:none;">
+        </label>
+  <button type="button" id="logoutBtn" class="btn btn-ghost btn-sm" style="display:none;">Logout</button>
+      </div>
+    </header>
+    <nav class="tabs" role="tablist" aria-label="Primary">
+      <button class="tab active" role="tab" aria-selected="true" data-view="users">Users</button>
+      <button class="tab" role="tab" aria-selected="false" data-view="status">Status</button>
+      <button class="tab" role="tab" aria-selected="false" data-view="routing">Routing</button>
+      <button class="tab" role="tab" aria-selected="false" data-view="config">Config</button>
+      <span class="tab-indicator" aria-hidden="true"><span class="sweep"></span></span>
+    </nav>
+    <!-- View: Users -->
+    <div id="view-users" class="view" style="display:block;">
+      <!-- Top: Collapsible Add/Edit Panel -->
+      <div class="card collapsible mode-create" id="user-panel">
+      <div class="card-header toggle" id="user-panel-toggle" aria-expanded="false">
+        <div class="inline">
+          <span class="chev">▶</span>
+          <strong id="panel-title">Create User</strong>
+          <span id="panel-mode" class="badge badge-primary">Create</span>
+          <span id="panel-edit-id" class="subtle" style="display:none;">#<span id="panel-edit-id-val"></span></span>
+        </div>
+        <div class="inline">
+          <button type="button" id="new-user" class="btn btn-primary btn-sm" title="Create a new user">New User</button>
+          <button type="button" id="clear" class="btn btn-ghost btn-sm" title="Clear form">Clear</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <form id="user-form" autocomplete="off" spellcheck="false">
+          <input type="hidden" id="user-id">
+          <input type="hidden" id="orig-username">
+          <input type="hidden" id="orig-expiry">
+
+          <div class="fields">
+            <div>
+              <label for="username">Username</label>
+              <div class="field">
+                <input id="username" class="mono" placeholder="alice">
+              </div>
+            </div>
+
+            
+
+            <div>
+              <label for="display_name">Display Name (optional)</label>
+              <div class="field">
+                <input id="display_name" placeholder="Alice (US-1)">
+              </div>
+            </div>
+
+            <div>
+              <label>Quota</label>
+              <div class="inline" style="gap:10px;">
+                <div class="field" style="width:160px;">
+                  <select id="quota_unit">
+                    <option value="unlimited">Unlimited</option>
+                    <option value="gb">GB</option>
+                  </select>
+                </div>
+                <div class="field" style="width:160px;">
+                  <input id="quota_value" type="number" min="0.0001" step="any" placeholder="50 (GB)" disabled>
+                </div>
+              </div>
+              <div class="subtle">Unlimited = -1 bytes. GB uses powers of two (1 GB = 1,073,741,824 bytes).</div>
+            </div>
+
+            <div>
+              <label for="expires_at">Expiry Date (Tehran UTC+3:30) (optional)</label>
+              <div class="field">
+                <input id="expires_at" type="datetime-local" placeholder="YYYY-MM-DDTHH:MM">
+              </div>
+              <div id="expiry-debug" class="subtle" style="margin-top:4px; display:none;"></div>
+              <div style="margin-top:10px;">
+                <label for="days_left">Days Left</label>
+                <div class="field">
+                  <input id="days_left" type="number" min="1" step="1" placeholder="e.g. 10">
+                </div>
+                <div class="subtle">Entering a value will set expiry date automatically.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row-actions">
+            <button type="submit" class="btn btn-primary" id="submitBtn">Create User</button>
+            <button type="button" id="clear2" class="btn btn-ghost">Reset Form</button>
+          </div>
+        </form>
+      </div>
+      </div>
+
+    <!-- Bottom: Users Table -->
+      <div class="card">
+      <div class="card-header">
+        <strong>Users</strong>
+        <div class="filter-bar">
+          <div class="field filter-input" title="Filter by username or display name">
+            <input id="filterText" placeholder="Filter by username or display name…">
+          </div>
+          <button class="btn btn-ghost btn-sm" id="clearFilter">Clear</button>
+          <span class="subtle">Refreshes every 5s. Online if traffic in last 30s. <span id="lastRefresh" class="subtle"></span></span>
+        </div>
+      </div>
+  <div class="card-body table-scroll" style="padding:0;">
+        <table id="users-table">
+          <thead>
+            <tr>
+              <th class="nowrap sortable" data-key="id">ID <span class="sort-indicator"></span></th>
+              <th class="sortable" data-key="live">Status <span class="sort-indicator"></span></th>
+              <th class="sortable" data-key="username">Username <span class="sort-indicator"></span></th>
+              <th class="sortable" data-key="name">Display Name <span class="sort-indicator"></span></th>
+              <th class="sortable" data-key="used_bytes">Usage <span class="sort-indicator"></span></th>
+              <th class="sortable" data-key="remaining_days">Days Left <span class="sort-indicator"></span></th>
+              <!-- Quota column collapsed into Usage -->
+              <th data-sortable="false">vless:// URL</th>
+              <th data-sortable="false">Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      </div>
+    </div>
+
+    <!-- View: Status -->
+    <div id="view-status" class="view" style="display:none;">
+      <div class="card">
+        <div class="card-header"><strong>Services Status</strong></div>
+        <div class="card-body">
+          <div class="inline" style="gap:20px; align-items:center; flex-wrap: wrap;">
+            <div>XRAY: <span id="xrayStatus" class="badge">…</span></div>
+            <div>Psiphon: <span id="psiphonStatus" class="badge">…</span></div>
+          </div>
+          <div class="row-actions" style="margin-top:10px;">
+            <button id="refreshStatusBtn" class="btn btn-ghost btn-sm">Refresh</button>
+            <button id="restartXray" class="btn btn-sm">Restart Xray</button>
+            <button id="restartPsiphon" class="btn btn-sm">Restart Psiphon</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><strong>Versions / Update</strong></div>
+        <div class="card-body">
+          <div class="inline" style="gap:20px; flex-wrap: wrap;">
+            <div>Xray version: <code id="xrayVersion">…</code></div>
+            <div>Psiphon version: <code id="psiphonVersion">…</code></div>
+          </div>
+          <div class="row-actions" style="margin-top:10px;">
+            <button id="updateXray" class="btn btn-warning btn-sm">Update Xray</button>
+            <button id="updatePsiphon" class="btn btn-warning btn-sm">Update Psiphon</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- View: Routing -->
+    <div id="view-routing" class="view" style="display:none;">
+      <div class="card">
+        <div class="card-header"><strong>Psiphon Domains</strong></div>
+        <div class="card-body">
+          <div class="domain-add-group" style="margin-bottom:10px;">
+            <div class="domain-field-wrap">
+              <input id="addPsiphonDomainInput" type="text" placeholder="Add domain (example.com)" autocomplete="off" list="psiphonDomainHistory" aria-label="New Psiphon domain">
+              <datalist id="psiphonDomainHistory"></datalist>
+            </div>
+            <button id="addPsiphonDomainBtn" class="btn btn-primary btn-sm" aria-label="Add domain">Add</button>
+            <button id="refreshPsiphonDomainsBtn" class="btn btn-ghost btn-sm" aria-label="Refresh domains">Refresh</button>
+          </div>
+          <div id="psiphonDomainsList" class="psiphon-domains-grid" role="list" aria-label="Psiphon Domains"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:10px;">
+        <div class="card-header"><strong>Routing Rules (JSON)</strong></div>
+        <div class="card-body">
+          <div class="field"><textarea id="routingRules" style="width:100%; min-height:220px; font-family:monospace;"></textarea></div>
+          <div class="row-actions">
+            <button id="loadRulesBtn" class="btn btn-ghost btn-sm">Load</button>
+            <button id="saveRulesBtn" class="btn btn-primary btn-sm">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View: Config -->
+    <div id="view-config" class="view" style="display:none;">
+      <div class="card">
+        <div class="card-header"><strong>Full Xray Config (JSON)</strong></div>
+        <div class="card-body">
+          <div class="field"><textarea id="configJson" style="width:100%; min-height:300px; font-family:monospace;"></textarea></div>
+          <div class="row-actions">
+            <button id="loadConfigBtn" class="btn btn-ghost btn-sm">Load</button>
+            <button id="validateConfigBtn" class="btn btn-sm">Validate</button>
+            <button id="saveConfigBtn" class="btn btn-primary btn-sm">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    /* Load main JS with unified version */
+    (function(){ var v = window.ASSET_VERSION; var s=document.createElement('script'); s.src='js.js?v='+encodeURIComponent(v); document.currentScript.parentNode.appendChild(s); })();
+  </script>
+</body>
+</html>
