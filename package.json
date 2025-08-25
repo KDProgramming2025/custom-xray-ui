@@ -1,0 +1,21 @@
+{
+  "name": "vpn-manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "perf": "node perf-browser.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+  "puppeteer": "^22.13.1",
+  "playwright": "^1.46.0"
+  }
+}
